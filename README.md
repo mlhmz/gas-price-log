@@ -1,5 +1,10 @@
-# code-with-quarkus
+# Gas Price Log
 
+This project is pretty much for calculating my gas prices so that I kinda can heat my flat 
+without going into bankruptcy. :'D
+
+---
+ 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
