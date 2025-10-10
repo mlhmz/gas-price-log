@@ -1,10 +1,13 @@
 package xyz.mlhmz.gaspricelog.services;
 
+import io.quarkus.test.common.WithTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import xyz.mlhmz.gaspricelog.PostgresDBContainerBean;
 import xyz.mlhmz.gaspricelog.PostgresDBTestResource;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 
@@ -13,11 +16,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
-class ForecastGroupServiceImplTest extends PostgresDBTestResource {
+@WithTestResource(PostgresDBTestResource.class)
+class ForecastGroupServiceImplTest {
     @Inject
     EntityManager entityManager;
     @Inject
     ForecastGroupServiceImpl forecastGroupService;
+    @Inject
+    PostgresDBContainerBean containerBean;
+
+    @AfterEach
+    void tearDown() {
+        containerBean.teardown();
+    }
 
     @Test
     void create() {
