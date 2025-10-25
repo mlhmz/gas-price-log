@@ -17,10 +17,19 @@ public class ForecastGroup {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
+    /**
+     * Display name of the forecast group
+     */
     private String groupName;
 
+    /**
+     * Gas price per kwh, varies from gas provider to gas provider
+     */
     private double gasPricePerKwh;
 
+    /**
+     * There is a calculatable kwh factor per qubicmeter that varies from gas heater to gas heater.
+     */
     private double kwhFactorPerQubicmeter;
 
     @OneToMany(mappedBy = "forecastGroup")

@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
+import xyz.mlhmz.gaspricelog.persistence.entities.Span;
 import xyz.mlhmz.gaspricelog.persistence.repositories.ForecastGroupRepository;
 
 import java.util.List;
@@ -13,15 +14,28 @@ import java.util.UUID;
 @ApplicationScoped
 public class ForecastGroupServiceImpl implements ForecastGroupService {
     @Inject
-    private ForecastGroupRepository repository;
+    ForecastGroupRepository repository;
+
     @Inject
-    private EntityManager entityManager;
+    SpanService spanService;
+
+    @Inject
+    EntityManager em;
 
     @Override
     @Transactional
     public ForecastGroup create(ForecastGroup group) {
-        repository.create(group);
-        return group;
+        if (group.getEntries() != null && !group.getEntries().isEmpty()) {
+            recalculateForecastGroupSpans(group);
+        }
+        return repository.create(group);
+    }
+
+    public ForecastGroup update(ForecastGroup group) {
+        if (group.getEntries() != null && !group.getEntries().isEmpty()) {
+            recalculateForecastGroupSpans(group);
+        }
+        return repository.update(group);
     }
 
     @Override
@@ -32,5 +46,24 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
     @Override
     public ForecastGroup findByUuid(UUID uuid) {
         return repository.findByUuid(uuid).orElse(null);
+    }
+
+    private void recalculateForecastGroupSpans(ForecastGroup forecastGroup) {
+        deletePreviousSpans(forecastGroup);
+
+        List<Span> spans = this.spanService.calculateSpanFromEntries(forecastGroup.getEntries());
+        forecastGroup.setSpans(spans);
+
+        em.getTransaction().rollback();
+    }
+
+    private void deletePreviousSpans(ForecastGroup forecastGroup) {
+        if (forecastGroup.getSpans() != null && !forecastGroup.getSpans().isEmpty()) {
+            forecastGroup.getSpans()
+                    .forEach(span -> {
+                        this.spanService.deleteSpan(span);
+                        forecastGroup.getSpans().remove(span);
+                    });
+        }
     }
 }

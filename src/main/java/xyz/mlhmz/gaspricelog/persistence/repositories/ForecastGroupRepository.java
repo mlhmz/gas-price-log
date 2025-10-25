@@ -22,7 +22,10 @@ public interface ForecastGroupRepository {
     List<ForecastGroup> findAll(Order<ForecastGroup> order);
 
     @Insert
-    void create(ForecastGroup forecastGroup);
+    ForecastGroup create(ForecastGroup forecastGroup);
+
+    @Update
+    ForecastGroup update(ForecastGroup forecastGroup);
 
     @Delete
     void deleteByUUID(UUID uuid);

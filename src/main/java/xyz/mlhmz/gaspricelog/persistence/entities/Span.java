@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Spans are actual data points that represent calculations from one point to another.
+ */
 @Entity
 @Getter
 @Setter
@@ -22,16 +25,34 @@ public class Span {
     @ManyToOne
     Entry toEntry;
 
-    private Integer days;
+    /**
+     * Days between the two data points
+     */
+    private Long days;
 
+    /**
+     * Difference between the two data points in kwh
+     */
     private Double difference;
 
+    /**
+     * Calculation how much gas is used per day in kwh
+     */
     private Double gasPerDay;
 
+    /**
+     * Price between the two data points
+     */
     private Double priceOfSpan;
 
+    /**
+     * Price per month on the span basis
+     */
     private Double pricePerMonthOnSpanBasis;
 
+    /**
+     *
+     */
     private Double pricePerDay;
 
     @ManyToOne

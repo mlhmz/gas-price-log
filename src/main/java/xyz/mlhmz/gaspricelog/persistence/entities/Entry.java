@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Entries are a point where a measurement of the gas counter succeeded.
+ */
 @Entity
 @Getter
 @Setter
