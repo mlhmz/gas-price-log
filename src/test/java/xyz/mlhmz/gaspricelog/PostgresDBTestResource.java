@@ -3,28 +3,13 @@ package xyz.mlhmz.gaspricelog;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PostgresDBTestResource implements QuarkusTestResourceLifecycleManager {
-    private static final List<String> TABLES = List.of(
-            "entry",
-            "forecastgroup",
-            "group_entry",
-            "group_span",
-            "span",
-            "valuegroup",
-            "valuegroup_entry",
-            "valuegroup_span"
-    );
-
     static PostgreSQLContainer<?> postgresContainer;
 
     @Override
@@ -45,20 +30,27 @@ public class PostgresDBTestResource implements QuarkusTestResourceLifecycleManag
 
 
     public static void teardown() {
-        TABLES.forEach(tableName -> executeDeleteStatement(postgresContainer, tableName));
+        clearAllTables(postgresContainer);
     }
 
-    private static void executeDeleteStatement(PostgreSQLContainer<?> postgresContainer, String tableName) {
-        System.out.printf("Deleting table '%s'.", tableName);
+    private static void clearAllTables(PostgreSQLContainer<?> postgresContainer) {
         try (Connection connection = DriverManager.getConnection(
                 postgresContainer.getJdbcUrl(),
                 postgresContainer.getUsername(),
                 postgresContainer.getPassword());
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM ?;")) {
-            statement.setString(0, tableName);
-            statement.executeUpdate();
+             Statement statement = connection.createStatement()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            try (ResultSet rs = metaData.getTables(null, null, "%", new String[]{"TABLE"})) {
+                while (rs.next()) {
+                    String tableName = rs.getString("TABLE_NAME");
+                    System.out.printf("Clearing the table '%s'.%n", tableName);
+                    String update = String.format("DELETE FROM %s;", tableName);
+                    System.out.printf("Executing the statement '%s'.%n", statement);
+                    statement.execute(update);
+                }
+            }
         } catch (SQLException exception) {
-            fail("A sql exception occured while tearing down.");
+            fail("A sql exception occured while tearing down.", exception);
         }
     }
 }
