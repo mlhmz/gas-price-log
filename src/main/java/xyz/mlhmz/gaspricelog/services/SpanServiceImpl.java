@@ -7,6 +7,8 @@ import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.persistence.entities.Span;
 import xyz.mlhmz.gaspricelog.persistence.repositories.SpanRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,21 +37,21 @@ public class SpanServiceImpl implements SpanService {
                 continue;
             }
             ForecastGroup forecastGroup = entry.getForecastGroup();
-            double gasPricePerKwh = forecastGroup.getGasPricePerKwh();
-            double kwhFactorPerQubicmeter = forecastGroup.getKwhFactorPerQubicmeter();
-            double previousKwh = toKwh(lastEntry.getValue(), kwhFactorPerQubicmeter);
-            double kwh = toKwh(entry.getValue(), kwhFactorPerQubicmeter);
-            double differenceInKwh = calculateDifferenceInKwh(kwh, previousKwh);
-            double priceOfDifference = calculatePriceOfDifference(differenceInKwh, gasPricePerKwh);
+            BigDecimal gasPricePerKwh = forecastGroup.getGasPricePerKwh();
+            BigDecimal kwhFactorPerQubicmeter = forecastGroup.getKwhFactorPerQubicmeter();
+            BigDecimal previousKwh = toKwh(lastEntry.getValue(), kwhFactorPerQubicmeter);
+            BigDecimal kwh = toKwh(entry.getValue(), kwhFactorPerQubicmeter);
+            BigDecimal differenceInKwh = calculateDifferenceInKwh(kwh, previousKwh);
+            BigDecimal priceOfDifference = calculatePriceOfDifference(differenceInKwh, gasPricePerKwh);
             long daysBetween = ChronoUnit.DAYS.between(lastEntry.getDate(), entry.getDate());
-            double pricePerDay = calculatePricePerDay(priceOfDifference, daysBetween);
+            BigDecimal pricePerDay = calculatePricePerDay(priceOfDifference, daysBetween);
             Span span = Span.builder()
                     .fromEntry(lastEntry)
                     .toEntry(entry)
                     .days(daysBetween)
-                    .difference(differenceInKwh)
-                    .gasPerDay(differenceInKwh / daysBetween)
-                    .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay))
+                    .difference(differenceInKwh.setScale(2, RoundingMode.CEILING))
+                    .gasPerDay(differenceInKwh.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING))
+                    .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay).setScale(2, RoundingMode.CEILING))
                     .pricePerDay(pricePerDay)
                     .build();
             Span savedSpan = this.spanRepository.create(span);
@@ -59,20 +61,20 @@ public class SpanServiceImpl implements SpanService {
         return spanList;
     }
 
-    private static double getPricePerMonthOnSpanBasis(double pricePerDay) {
-        return pricePerDay * MONTH_IN_DAYS;
+    private BigDecimal getPricePerMonthOnSpanBasis(BigDecimal pricePerDay) {
+        return pricePerDay.multiply(BigDecimal.valueOf(MONTH_IN_DAYS));
     }
 
-    private double calculatePricePerDay(double priceOfDifference, long daysBetween) {
-        return priceOfDifference / daysBetween;
+    private BigDecimal calculatePricePerDay(BigDecimal priceOfDifference, long daysBetween) {
+        return priceOfDifference.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING);
     }
 
-    private double calculatePriceOfDifference(double differenceInKwh, double gasPricePerKwh) {
-        return differenceInKwh * gasPricePerKwh;
+    private BigDecimal calculatePriceOfDifference(BigDecimal differenceInKwh, BigDecimal gasPricePerKwh) {
+        return differenceInKwh.multiply(gasPricePerKwh);
     }
 
-    private double calculateDifferenceInKwh(double kwh, double previousKwh) {
-        return kwh - previousKwh;
+    private BigDecimal calculateDifferenceInKwh(BigDecimal kwh, BigDecimal previousKwh) {
+        return kwh.subtract(previousKwh);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class SpanServiceImpl implements SpanService {
         this.spanRepository.deleteSpan(span);
     }
 
-    private double toKwh(final double qubicmeter, final double kwhFactorPerQubicmeter) {
-        return qubicmeter * kwhFactorPerQubicmeter;
+    private BigDecimal toKwh(final BigDecimal qubicmeter, final BigDecimal kwhFactorPerQubicmeter) {
+        return qubicmeter.multiply(kwhFactorPerQubicmeter);
     }
 }

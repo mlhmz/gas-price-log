@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import xyz.mlhmz.gaspricelog.PostgresDBTestResource;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,8 +61,8 @@ class ForecastGroupServiceImplTest {
 
     private ForecastGroup createForecastGroup(int gasPricePerKwh, int kwhFactorPerQubicmeter) {
         return ForecastGroup.builder()
-                .gasPricePerKwh(gasPricePerKwh)
-                .kwhFactorPerQubicmeter(kwhFactorPerQubicmeter)
+                .gasPricePerKwh(BigDecimal.valueOf(gasPricePerKwh))
+                .kwhFactorPerQubicmeter(BigDecimal.valueOf(kwhFactorPerQubicmeter))
                 .build();
     }
 }

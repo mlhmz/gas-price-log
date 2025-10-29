@@ -3,6 +3,7 @@ package xyz.mlhmz.gaspricelog.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +26,12 @@ public class ForecastGroup {
     /**
      * Gas price per kwh, varies from gas provider to gas provider
      */
-    private double gasPricePerKwh;
+    private BigDecimal gasPricePerKwh;
 
     /**
      * There is a calculatable kwh factor per qubicmeter that varies from gas heater to gas heater.
      */
-    private double kwhFactorPerQubicmeter;
+    private BigDecimal kwhFactorPerQubicmeter;
 
     @OneToMany(mappedBy = "forecastGroup")
     List<Entry> entries;

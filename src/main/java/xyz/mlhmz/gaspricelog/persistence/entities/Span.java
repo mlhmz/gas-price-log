@@ -3,6 +3,7 @@ package xyz.mlhmz.gaspricelog.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Span {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,27 +35,27 @@ public class Span {
     /**
      * Difference between the two data points in kwh
      */
-    private Double difference;
+    private BigDecimal difference;
 
     /**
      * Calculation how much gas is used per day in kwh
      */
-    private Double gasPerDay;
+    private BigDecimal gasPerDay;
 
     /**
      * Price between the two data points
      */
-    private Double priceOfSpan;
+    private BigDecimal priceOfSpan;
 
     /**
      * Price per month on the span basis
      */
-    private Double pricePerMonthOnSpanBasis;
+    private BigDecimal pricePerMonthOnSpanBasis;
 
     /**
      *
      */
-    private Double pricePerDay;
+    private BigDecimal pricePerDay;
 
     @ManyToOne
     @JoinColumn(name = "forecastGroup_uuid", nullable = false)
