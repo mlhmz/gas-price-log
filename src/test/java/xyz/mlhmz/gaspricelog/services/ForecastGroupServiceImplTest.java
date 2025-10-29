@@ -27,20 +27,20 @@ class ForecastGroupServiceImplTest {
 
     @Test
     void create() {
-        ForecastGroup group = createForecastGroup(12, 12);
+        ForecastGroup group = createForecastGroup(new BigDecimal("12.00"), new BigDecimal("12.00"));
 
         ForecastGroup forecastGroup = forecastGroupService.create(group);
 
         assertThat(forecastGroup.getUuid()).isNotNull();
-        assertThat(forecastGroup.getGasPricePerKwh()).isEqualTo(12);
-        assertThat(forecastGroup.getKwhFactorPerQubicmeter()).isEqualTo(12);
+        assertThat(forecastGroup.getGasPricePerKwh()).isEqualTo(new BigDecimal("12.00"));
+        assertThat(forecastGroup.getKwhFactorPerQubicmeter()).isEqualTo(new BigDecimal("12.00"));
     }
 
     @Test
     @Transactional
     void findAll() {
-        ForecastGroup firstForecastGroup = createForecastGroup(10, 10);
-        ForecastGroup secondForecastGroup = createForecastGroup(13, 14);
+        ForecastGroup firstForecastGroup = createForecastGroup(new BigDecimal("10.00"), new BigDecimal("10.00"));
+        ForecastGroup secondForecastGroup = createForecastGroup(new BigDecimal("13.00"), new BigDecimal("14.00"));
 
         forecastGroupService.create(firstForecastGroup);
         forecastGroupService.create(secondForecastGroup);
@@ -50,19 +50,19 @@ class ForecastGroupServiceImplTest {
 
         ForecastGroup firstSavedGroup = groups.get(0);
         assertThat(firstSavedGroup.getUuid()).isNotNull();
-        assertThat(firstSavedGroup.getGasPricePerKwh()).isEqualTo(10);
-        assertThat(firstSavedGroup.getKwhFactorPerQubicmeter()).isEqualTo(10);
+        assertThat(firstSavedGroup.getGasPricePerKwh()).isEqualTo(new BigDecimal("10.00"));
+        assertThat(firstSavedGroup.getKwhFactorPerQubicmeter()).isEqualTo(new BigDecimal("10.00"));
 
         ForecastGroup secondSavedGroup = groups.get(1);
         assertThat(secondSavedGroup.getUuid()).isNotNull();
-        assertThat(secondSavedGroup.getGasPricePerKwh()).isEqualTo(13);
-        assertThat(secondSavedGroup.getKwhFactorPerQubicmeter()).isEqualTo(14);
+        assertThat(secondSavedGroup.getGasPricePerKwh()).isEqualTo(new BigDecimal("13.00"));
+        assertThat(secondSavedGroup.getKwhFactorPerQubicmeter()).isEqualTo(new BigDecimal("14.00"));
     }
 
-    private ForecastGroup createForecastGroup(int gasPricePerKwh, int kwhFactorPerQubicmeter) {
+    private ForecastGroup createForecastGroup(BigDecimal gasPricePerKwh, BigDecimal kwhFactorPerQubicmeter) {
         return ForecastGroup.builder()
-                .gasPricePerKwh(BigDecimal.valueOf(gasPricePerKwh))
-                .kwhFactorPerQubicmeter(BigDecimal.valueOf(kwhFactorPerQubicmeter))
+                .gasPricePerKwh(gasPricePerKwh)
+                .kwhFactorPerQubicmeter(kwhFactorPerQubicmeter)
                 .build();
     }
 }
