@@ -1,5 +1,6 @@
 package xyz.mlhmz.gaspricelog.services;
 
+import xyz.mlhmz.gaspricelog.exceptions.ForecastGroupNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface ForecastGroupService {
 
     List<ForecastGroup> findAll();
 
-    ForecastGroup findByUuid(UUID uuid);
+    ForecastGroup findByUuid(UUID uuid) throws ForecastGroupNotFoundException;
+
+    void recalculateForecastGroupSpans(ForecastGroup forecastGroup);
 }

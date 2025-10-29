@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import xyz.mlhmz.gaspricelog.exceptions.ForecastGroupNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.persistence.entities.Span;
 import xyz.mlhmz.gaspricelog.persistence.repositories.ForecastGroupRepository;
@@ -44,11 +45,14 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
     }
 
     @Override
-    public ForecastGroup findByUuid(UUID uuid) {
-        return repository.findByUuid(uuid).orElse(null);
+    public ForecastGroup findByUuid(UUID uuid) throws ForecastGroupNotFoundException {
+        return repository.findByUuid(uuid).orElseThrow(() ->
+                new ForecastGroupNotFoundException(String.format("The forecast group with the UUID '%s' couldn't be found.", uuid))
+        );
     }
 
-    private void recalculateForecastGroupSpans(ForecastGroup forecastGroup) {
+    @Override
+    public void recalculateForecastGroupSpans(ForecastGroup forecastGroup) {
         deletePreviousSpans(forecastGroup);
 
         List<Span> spans = this.spanService.calculateSpanFromEntries(forecastGroup.getEntries());

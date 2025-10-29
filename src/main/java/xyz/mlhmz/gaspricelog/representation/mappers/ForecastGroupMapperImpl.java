@@ -25,6 +25,28 @@ public class ForecastGroupMapperImpl implements ForecastGroupMapper {
                 .build();
     }
 
+    @Override
+    public ForecastGroup fromDto(ForecastGroupDto dto) {
+        return ForecastGroup.builder()
+                .uuid(dto.uuid())
+                .groupName(dto.groupName())
+                .gasPricePerKwh(dto.gasPricePerKwh())
+                .kwhFactorPerQubicmeter(dto.kwhFactorPerQubicmeter())
+                .build();
+    }
+
+    @Override
+    public ForecastGroup fromDto(ForecastGroupDto forecastGroupDto, List<Entry> entries, List<Span> spans) {
+        return ForecastGroup.builder()
+                .uuid(forecastGroupDto.uuid())
+                .groupName(forecastGroupDto.groupName())
+                .gasPricePerKwh(forecastGroupDto.gasPricePerKwh())
+                .kwhFactorPerQubicmeter(forecastGroupDto.kwhFactorPerQubicmeter())
+                .entries(entries)
+                .spans(spans)
+                .build();
+    }
+
     private static List<SpanReferenceDto> mapSpans(ForecastGroup forecastGroup) {
         List<Span> spans = forecastGroup.getSpans();
         if (spans == null) {
@@ -43,15 +65,5 @@ public class ForecastGroupMapperImpl implements ForecastGroupMapper {
         return entries.stream()
                 .map(entry -> new EntryReferenceDto(entry.getUuid()))
                 .toList();
-    }
-
-    @Override
-    public ForecastGroup fromDto(ForecastGroupDto dto) {
-        return ForecastGroup.builder()
-                .uuid(dto.uuid())
-                .groupName(dto.groupName())
-                .gasPricePerKwh(dto.gasPricePerKwh())
-                .kwhFactorPerQubicmeter(dto.kwhFactorPerQubicmeter())
-                .build();
     }
 }
