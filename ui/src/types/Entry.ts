@@ -1,0 +1,3 @@
+interface EntryReference {
+    uuid?: string
+}
