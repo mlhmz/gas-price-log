@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import xyz.mlhmz.gaspricelog.exceptions.EntriesNotFromSameForecastgroupException;
+import xyz.mlhmz.gaspricelog.exceptions.SpanNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.persistence.entities.Span;
@@ -18,14 +19,21 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class SpanServiceImpl implements SpanService {
     public static final int MONTH_IN_DAYS = 30;
+
     @Inject
     SpanRepository spanRepository;
 
     @Override
     public List<Span> calculateSpanFromEntries(List<Entry> entries) {
-        entries.sort(Comparator.comparing(Entry::getDate));
+            entries.sort(Comparator.comparing(Entry::getDate));
 
-        Set<UUID> forecastGroupUuidSet = entries.stream().map(Entry::getUuid).collect(Collectors.toSet());
+        Set<UUID> forecastGroupUuidSet = entries.stream().map(entry -> {
+            ForecastGroup forecastGroup = entry.getForecastGroup();
+            if (forecastGroup != null) {
+                return forecastGroup.getUuid();
+            }
+            return null;
+        }).collect(Collectors.toSet());
 
         if (forecastGroupUuidSet.size() > 1) {
             throw new EntriesNotFromSameForecastgroupException("The given entries are not all from the same forecast group.");
@@ -55,12 +63,25 @@ public class SpanServiceImpl implements SpanService {
                     .gasPerDay(differenceInKwh.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING))
                     .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay).setScale(2, RoundingMode.CEILING))
                     .pricePerDay(pricePerDay)
+                    .forecastGroup(forecastGroup)
                     .build();
             Span savedSpan = this.spanRepository.create(span);
             spanList.add(savedSpan);
             lastEntry = entry;
         }
         return spanList;
+    }
+
+    @Override
+    public List<Span> findAllSpans() {
+        return spanRepository.findAll();
+    }
+
+    @Override
+    public Span findByUuid(UUID uuid) throws SpanNotFoundException {
+        return spanRepository.findByUuid(uuid).orElseThrow(() ->
+                new SpanNotFoundException(String.format("The span with the uuid '%s' couldn't be found.", uuid))
+        );
     }
 
     private BigDecimal getPricePerMonthOnSpanBasis(BigDecimal pricePerDay) {
