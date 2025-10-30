@@ -1,11 +1,13 @@
 package xyz.mlhmz.gaspricelog.representation.mappers;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.representation.dtos.EntryDto;
 
 import java.util.UUID;
 
+@ApplicationScoped
 public class EntryMapperImpl implements EntryMapper {
     @Override
     public EntryDto toDto(Entry entry) {

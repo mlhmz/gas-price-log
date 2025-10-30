@@ -32,6 +32,7 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
         return repository.create(group);
     }
 
+    @Override
     public ForecastGroup update(ForecastGroup group) {
         if (group.getEntries() != null && !group.getEntries().isEmpty()) {
             recalculateForecastGroupSpans(group);
@@ -57,8 +58,6 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
 
         List<Span> spans = this.spanService.calculateSpanFromEntries(forecastGroup.getEntries());
         forecastGroup.setSpans(spans);
-
-        em.getTransaction().rollback();
     }
 
     private void deletePreviousSpans(ForecastGroup forecastGroup) {

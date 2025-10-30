@@ -33,9 +33,9 @@ public class ForecastGroup {
      */
     private BigDecimal kwhFactorPerQubicmeter;
 
-    @OneToMany(mappedBy = "forecastGroup")
+    @OneToMany(mappedBy = "forecastGroup", fetch = FetchType.EAGER)
     List<Entry> entries;
 
-    @OneToMany(mappedBy = "forecastGroup")
+    @OneToMany(mappedBy = "forecastGroup", fetch = FetchType.EAGER)
     List<Span> spans;
 }

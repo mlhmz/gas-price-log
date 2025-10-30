@@ -2,6 +2,7 @@ package xyz.mlhmz.gaspricelog.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import xyz.mlhmz.gaspricelog.exceptions.EntriesNotFromSameForecastgroupException;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;

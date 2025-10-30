@@ -5,8 +5,8 @@ Accept: application/json
 
 {
   "groupName": "Test Group",
-  "gasPricePerKwh": 1,
-  "kwhFactorPerQubicmeter": 1
+  "gasPricePerKwh": 0.1415,
+  "kwhFactorPerQubicmeter": 11.512
 }
 
 ###
