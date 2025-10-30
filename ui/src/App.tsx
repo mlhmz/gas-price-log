@@ -1,30 +1,16 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import type { ForecastGroup } from './types/ForecastGroup';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ForecastGroupEditor } from "./components/ForecastGroupEditor"
 
-async function fetchData() {
-  const response = await fetch("/api/v1/forecastgroups");
-  return await response.json() as ForecastGroup[]
-}
+const queryClient = new QueryClient()
 
 function App() {
-  const [data, setData] = useState<ForecastGroup[]>([])
-
-  useEffect(() => {
-    fetchData().then(res => setData(res))
-  }, [])
-
   return (
     <>
-      {
-        data.map(value => <div>
-          <p>{value.uuid}</p>
-          <p>{value.groupName}</p>
-          <p>{value.gasPricePerKwh}</p>
-          <p>{value.kwhFactorPerQubicmeter}</p>
-          <hr/>
-          </div>)
-      }
+      <QueryClientProvider client={queryClient}>
+        <div>
+          <ForecastGroupEditor />
+        </div>
+      </QueryClientProvider>
     </>
   )
 }

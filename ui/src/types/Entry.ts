@@ -1,3 +1,3 @@
-interface EntryReference {
+export interface EntryReference {
     uuid?: string
 }
