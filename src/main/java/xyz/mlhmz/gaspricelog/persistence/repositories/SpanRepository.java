@@ -25,4 +25,7 @@ public interface SpanRepository {
 
     @Delete
     void deleteSpan(Span span);
+
+    @Delete
+    void deleteSpans(List<Span> spans);
 }

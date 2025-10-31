@@ -105,6 +105,11 @@ public class SpanServiceImpl implements SpanService {
         this.spanRepository.deleteSpan(span);
     }
 
+    @Override
+    public void deleteSpans(List<Span> spans) {
+        this.spanRepository.deleteSpans(spans);
+    }
+
     private BigDecimal toKwh(final BigDecimal qubicmeter, final BigDecimal kwhFactorPerQubicmeter) {
         return qubicmeter.multiply(kwhFactorPerQubicmeter);
     }

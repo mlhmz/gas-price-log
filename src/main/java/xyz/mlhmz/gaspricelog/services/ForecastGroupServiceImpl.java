@@ -62,11 +62,8 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
 
     private void deletePreviousSpans(ForecastGroup forecastGroup) {
         if (forecastGroup.getSpans() != null && !forecastGroup.getSpans().isEmpty()) {
-            forecastGroup.getSpans()
-                    .forEach(span -> {
-                        this.spanService.deleteSpan(span);
-                        forecastGroup.getSpans().remove(span);
-                    });
+            this.spanService.deleteSpans(forecastGroup.getSpans());
+            forecastGroup.getSpans().clear();
         }
     }
 }

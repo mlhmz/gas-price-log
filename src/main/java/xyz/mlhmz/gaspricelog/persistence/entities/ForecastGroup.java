@@ -36,6 +36,6 @@ public class ForecastGroup {
     @OneToMany(mappedBy = "forecastGroup", fetch = FetchType.EAGER)
     List<Entry> entries;
 
-    @OneToMany(mappedBy = "forecastGroup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "forecastGroup", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     List<Span> spans;
 }

@@ -15,4 +15,6 @@ public interface SpanService {
     Span findByUuid(UUID uuid) throws SpanNotFoundException;
 
     void deleteSpan(Span span);
+
+    void deleteSpans(List<Span> spans);
 }
