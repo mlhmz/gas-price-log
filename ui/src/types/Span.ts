@@ -1,3 +1,3 @@
 export interface SpanReference {
-    uuid?: string
+	uuid?: string;
 }
