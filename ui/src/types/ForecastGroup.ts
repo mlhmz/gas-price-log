@@ -9,6 +9,7 @@ export const forecastGroupMutateSchema = z.object({
 export type ForecastGroupMutation = z.infer<typeof forecastGroupMutateSchema>
 
 export const forecastGroupQuerySchema = z.object({
+    uuid: z.uuid(),
     groupName: z.string(),
     gasPricePerKwh: z.number(),
     kwhFactorPerQubicmeter: z.number(),

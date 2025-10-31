@@ -46,31 +46,36 @@ public class SpanServiceImpl implements SpanService {
                 lastEntry = entry;
                 continue;
             }
-            ForecastGroup forecastGroup = entry.getForecastGroup();
-            BigDecimal gasPricePerKwh = forecastGroup.getGasPricePerKwh();
-            BigDecimal kwhFactorPerQubicmeter = forecastGroup.getKwhFactorPerQubicmeter();
-            BigDecimal previousKwh = toKwh(lastEntry.getValue(), kwhFactorPerQubicmeter);
-            BigDecimal kwh = toKwh(entry.getValue(), kwhFactorPerQubicmeter);
-            BigDecimal differenceInKwh = calculateDifferenceInKwh(kwh, previousKwh);
-            BigDecimal priceOfDifference = calculatePriceOfDifference(differenceInKwh, gasPricePerKwh);
-            long daysBetween = ChronoUnit.DAYS.between(lastEntry.getDate(), entry.getDate());
-            BigDecimal pricePerDay = calculatePricePerDay(priceOfDifference, daysBetween);
-            Span span = Span.builder()
-                    .fromEntry(lastEntry)
-                    .toEntry(entry)
-                    .days(daysBetween)
-                    .difference(differenceInKwh.setScale(2, RoundingMode.CEILING))
-                    .gasPerDay(differenceInKwh.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING))
-                    .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay).setScale(2, RoundingMode.CEILING))
-                    .priceOfSpan(priceOfDifference)
-                    .pricePerDay(pricePerDay)
-                    .forecastGroup(forecastGroup)
-                    .build();
+            Span span = createAndCalculateSpanValues(entry, lastEntry);
             Span savedSpan = this.spanRepository.create(span);
             spanList.add(savedSpan);
             lastEntry = entry;
         }
         return spanList;
+    }
+
+    private Span createAndCalculateSpanValues(Entry entry, Entry lastEntry) {
+        ForecastGroup forecastGroup = entry.getForecastGroup();
+        BigDecimal gasPricePerKwh = forecastGroup.getGasPricePerKwh();
+        BigDecimal kwhFactorPerQubicmeter = forecastGroup.getKwhFactorPerQubicmeter();
+        BigDecimal previousKwh = toKwh(lastEntry.getValue(), kwhFactorPerQubicmeter);
+        BigDecimal kwh = toKwh(entry.getValue(), kwhFactorPerQubicmeter);
+        BigDecimal differenceInKwh = calculateDifferenceInKwh(kwh, previousKwh);
+        BigDecimal priceOfDifference = calculatePriceOfDifference(differenceInKwh, gasPricePerKwh);
+        long daysBetween = ChronoUnit.DAYS.between(lastEntry.getDate(), entry.getDate());
+        BigDecimal pricePerDay = calculatePricePerDay(priceOfDifference, daysBetween);
+        Span span = Span.builder()
+                .fromEntry(lastEntry)
+                .toEntry(entry)
+                .days(daysBetween)
+                .difference(differenceInKwh.setScale(2, RoundingMode.CEILING))
+                .gasPerDay(differenceInKwh.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING))
+                .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay).setScale(2, RoundingMode.CEILING))
+                .priceOfSpan(priceOfDifference)
+                .pricePerDay(pricePerDay)
+                .forecastGroup(forecastGroup)
+                .build();
+        return span;
     }
 
     @Override

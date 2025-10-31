@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ForecastGroupEditor } from "./components/ForecastGroupEditor"
+import { RouterProvider } from "react-router"
+import { router } from "./router"
 
 const queryClient = new QueryClient()
 
@@ -7,9 +8,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <div>
-          <ForecastGroupEditor />
-        </div>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </>
   )

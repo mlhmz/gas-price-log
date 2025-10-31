@@ -5,6 +5,7 @@ import { Input } from "./ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { forecastGroupMutateSchema, type ForecastGroupMutation, type ForecastGroupQuery } from "@/types/ForecastGroup"
 import { useMutation } from "@tanstack/react-query"
+import { useNavigate } from "react-router"
 
 const postForecastGroup = async (forecastGroup: ForecastGroupMutation): Promise<ForecastGroupQuery> => {
     const response = await fetch("/api/v1/forecastgroups", {
@@ -21,14 +22,15 @@ const postForecastGroup = async (forecastGroup: ForecastGroupMutation): Promise<
 }
 
 export const ForecastGroupEditor = () => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState } = useForm({
         resolver: zodResolver(forecastGroupMutateSchema)
     })
     const { mutate } = useMutation({
         mutationKey: ["forecastgroup"],
-        mutationFn: postForecastGroup
+        mutationFn: postForecastGroup,
+        onSuccess: group => navigate(`/${group.uuid}`)
     })
-
 
     console.log(formState.errors)
 
