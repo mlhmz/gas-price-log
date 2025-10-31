@@ -62,6 +62,7 @@ public class SpanServiceImpl implements SpanService {
                     .difference(differenceInKwh.setScale(2, RoundingMode.CEILING))
                     .gasPerDay(differenceInKwh.divide(BigDecimal.valueOf(daysBetween), 2, RoundingMode.CEILING))
                     .pricePerMonthOnSpanBasis(getPricePerMonthOnSpanBasis(pricePerDay).setScale(2, RoundingMode.CEILING))
+                    .priceOfSpan(priceOfDifference)
                     .pricePerDay(pricePerDay)
                     .forecastGroup(forecastGroup)
                     .build();
