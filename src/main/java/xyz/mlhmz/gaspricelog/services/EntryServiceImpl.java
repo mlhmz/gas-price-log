@@ -39,7 +39,7 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public Entry findByUuid(UUID uuid) throws EntryNotFoundException {
         return entryRepository.findByUuid(uuid).orElseThrow(() ->
-                new EntryNotFoundException(String.format("The entry with the id '%s' was not found.", uuid))
+                new EntryNotFoundException(String.format("The entry with the uuid '%s' was not found.", uuid))
         );
     }
 
