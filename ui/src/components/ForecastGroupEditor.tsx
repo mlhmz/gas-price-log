@@ -3,36 +3,18 @@ import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Input } from "./ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { forecastGroupMutateSchema, type ForecastGroupMutation, type ForecastGroupQuery } from "@/types/ForecastGroup"
-import { useMutation } from "@tanstack/react-query"
+import { forecastGroupMutateSchema, type ForecastGroupMutation } from "@/types/ForecastGroup"
 import { useNavigate } from "react-router"
-
-const postForecastGroup = async (forecastGroup: ForecastGroupMutation): Promise<ForecastGroupQuery> => {
-    const response = await fetch("/api/v1/forecastgroups", {
-        method: "POST",
-        body: JSON.stringify(forecastGroup),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    if (!response.ok) {
-        console.log(response);
-    }
-    return response.json()
-}
+import { useMutateForecastGroup } from "@/hooks/use-mutate-forecast-group"
 
 export const ForecastGroupEditor = () => {
     const navigate = useNavigate();
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit } = useForm({
         resolver: zodResolver(forecastGroupMutateSchema)
     })
-    const { mutate } = useMutation({
-        mutationKey: ["forecastgroup"],
-        mutationFn: postForecastGroup,
+    const { mutate } = useMutateForecastGroup({
         onSuccess: group => navigate(`/${group.uuid}`)
     })
-
-    console.log(formState.errors)
 
     const onSubmit = (data: ForecastGroupMutation) => {
         mutate(data);
