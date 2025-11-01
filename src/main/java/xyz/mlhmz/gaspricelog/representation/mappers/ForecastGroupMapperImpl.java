@@ -1,18 +1,23 @@
 package xyz.mlhmz.gaspricelog.representation.mappers;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.persistence.entities.Span;
-import xyz.mlhmz.gaspricelog.representation.dtos.EntryReferenceDto;
-import xyz.mlhmz.gaspricelog.representation.dtos.ForecastGroupDto;
-import xyz.mlhmz.gaspricelog.representation.dtos.SpanReferenceDto;
+import xyz.mlhmz.gaspricelog.representation.dtos.*;
 
 import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
 public class ForecastGroupMapperImpl implements ForecastGroupMapper {
+    @Inject
+    SpanMapper spanMapper;
+
+    @Inject
+    EntryMapper entryMapper;
+
     @Override
     public ForecastGroupDto toDto(ForecastGroup forecastGroup) {
         return ForecastGroupDto.builder()
@@ -47,23 +52,23 @@ public class ForecastGroupMapperImpl implements ForecastGroupMapper {
                 .build();
     }
 
-    private static List<SpanReferenceDto> mapSpans(ForecastGroup forecastGroup) {
+    private List<SpanDto> mapSpans(ForecastGroup forecastGroup) {
         List<Span> spans = forecastGroup.getSpans();
         if (spans == null) {
             return Collections.emptyList();
         }
         return spans.stream()
-                .map(span -> new SpanReferenceDto(span.getUuid()))
+                .map(spanMapper::toDto)
                 .toList();
     }
 
-    private static List<EntryReferenceDto> mapEntries(ForecastGroup forecastGroup) {
+    private List<EntryDto> mapEntries(ForecastGroup forecastGroup) {
         List<Entry> entries = forecastGroup.getEntries();
         if (entries == null) {
             return Collections.emptyList();
         }
         return entries.stream()
-                .map(entry -> new EntryReferenceDto(entry.getUuid()))
+                .map(entryMapper::toDto)
                 .toList();
     }
 }

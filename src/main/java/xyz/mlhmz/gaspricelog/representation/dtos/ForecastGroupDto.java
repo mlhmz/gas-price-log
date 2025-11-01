@@ -12,7 +12,7 @@ public record ForecastGroupDto(
         String groupName,
         BigDecimal gasPricePerKwh,
         BigDecimal kwhFactorPerQubicmeter,
-        List<EntryReferenceDto> entries,
-        List<SpanReferenceDto> spans
+        List<EntryDto> entries,
+        List<SpanDto> spans
 ) {
 }
