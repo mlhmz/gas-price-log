@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.representation.dtos.EntryDto;
+import xyz.mlhmz.gaspricelog.representation.dtos.ForecastGroupReferenceDto;
 
 import java.util.UUID;
 
@@ -16,16 +17,8 @@ public class EntryMapperImpl implements EntryMapper {
                 .value(entry.getValue())
                 .date(entry.getDate())
                 .createdAt(entry.getCreatedAt())
-                .forecastGroupUuid(retrieveForecastGroupUuid(entry))
+                .forecastGroup(ForecastGroupReferenceDto.ofEntity(entry.getForecastGroup()))
                 .build();
-    }
-
-    private UUID retrieveForecastGroupUuid(Entry entry) {
-        ForecastGroup forecastGroup = entry.getForecastGroup();
-        if (forecastGroup != null) {
-            return forecastGroup.getUuid();
-        }
-        return null;
     }
 
     @Override

@@ -11,6 +11,7 @@ import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.representation.dtos.EntryDto;
 import xyz.mlhmz.gaspricelog.representation.dtos.ErrorDto;
+import xyz.mlhmz.gaspricelog.representation.dtos.ForecastGroupReferenceDto;
 import xyz.mlhmz.gaspricelog.representation.mappers.EntryMapper;
 import xyz.mlhmz.gaspricelog.services.EntryService;
 import xyz.mlhmz.gaspricelog.services.ForecastGroupService;
@@ -36,8 +37,9 @@ public class EntryResource {
     public Response create(EntryDto entryDto) {
         try {
             Entry entry;
-            if (entryDto.forecastGroupUuid() != null) {
-                ForecastGroup forecastGroup = forecastGroupService.findByUuid(entryDto.forecastGroupUuid());
+            ForecastGroupReferenceDto forecastGroupReference = entryDto.forecastGroup();
+            if (forecastGroupReference != null) {
+                ForecastGroup forecastGroup = forecastGroupService.findByUuid(forecastGroupReference.uuid());
                 entry = entryMapper.fromDto(entryDto, forecastGroup);
             } else {
                 entry = entryMapper.fromDto(entryDto);

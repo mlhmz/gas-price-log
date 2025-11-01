@@ -8,5 +8,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record EntryDto(UUID uuid, BigDecimal value, LocalDate date, LocalDateTime createdAt, UUID forecastGroupUuid) {
+public record EntryDto(
+        UUID uuid,
+        BigDecimal value,
+        LocalDate date,
+        LocalDateTime createdAt,
+        ForecastGroupReferenceDto forecastGroup
+) {
 }

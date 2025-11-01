@@ -16,6 +16,6 @@ public record SpanDto(
         BigDecimal priceOfSpan,
         BigDecimal pricePerMonthOnSpanBasis,
         BigDecimal pricePerDay,
-        ForecastGroupReferenceDto forecastGroupReferenceDto
+        ForecastGroupReferenceDto forecastGroup
 ) {
 }

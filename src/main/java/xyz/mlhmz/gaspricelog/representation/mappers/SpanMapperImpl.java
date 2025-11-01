@@ -20,7 +20,7 @@ public class SpanMapperImpl implements SpanMapper {
                 .priceOfSpan(span.getPriceOfSpan())
                 .pricePerMonthOnSpanBasis(span.getPricePerMonthOnSpanBasis())
                 .pricePerDay(span.getPricePerDay())
-                .forecastGroupReferenceDto(ForecastGroupReferenceDto.ofEntity(span.getForecastGroup()))
+                .forecastGroup(ForecastGroupReferenceDto.ofEntity(span.getForecastGroup()))
                 .build();
     }
 }
