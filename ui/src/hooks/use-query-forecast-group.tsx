@@ -1,17 +1,30 @@
-import { forecastGroupQuerySchema } from "@/types/ForecastGroup";
+import {
+	isServerError,
+	serverErrorSchema
+} from "@/types/Common";
+import {
+	forecastGroupQuerySchema,
+	type ForecastGroupQuery,
+} from "@/types/ForecastGroup";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-const getForecastGroup = async (uuid?: string) => {
+const getForecastGroup = async (
+	uuid?: string,
+): Promise<ForecastGroupQuery> => {
 	const response = await fetch(`/api/v1/forecastgroups/${uuid}`, {
 		method: "GET",
 	});
 	const json = await response.json();
 	const parseResult = forecastGroupQuerySchema.safeParse(json);
-	if (!parseResult.success) {
-		throw parseResult.error;
+	if (parseResult.success) {
+		console.log(parseResult);
+		return parseResult.data;
 	}
-	return parseResult.data;
+	if (isServerError(json)) {
+		throw new Error(json.message);
+	}
+	throw parseResult.error;
 };
 
 export const useQueryForecastGroup = ({ uuid }: { uuid?: string }) => {
@@ -19,6 +32,7 @@ export const useQueryForecastGroup = ({ uuid }: { uuid?: string }) => {
 		queryKey: ["forecastgroup", uuid],
 		queryFn: () => getForecastGroup(uuid),
 		enabled: !!uuid,
+		retry: false
 	});
 	if (query.error) {
 		toast.error(query.error.message);

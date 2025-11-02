@@ -1,10 +1,18 @@
+import { EntryEditor } from "@/components/EntryEditor";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
-import { useParams } from "react-router";
+import { isServerError } from "@/types/Common";
+import { useNavigate, useParams } from "react-router";
 
 export const ShowForecastGroup = () => {
 	const { uuid } = useParams();
-	const { data } = useQueryForecastGroup({ uuid: uuid });
-
+	const { data, error } = useQueryForecastGroup({ uuid: uuid });
+	
+	if (error) {
+		return <div className="flex flex-col w-screen h-screen items-center justify-center gap-3">
+			<h1 className="text-5xl font-bold">An error occured. 😪</h1>
+			<code className="bg-gray-200 p-4 text-sm rounded-md max-w-1/2 h-14 overflow-x-auto overflow-y-clip text-nowrap">{error.message}</code>
+		</div>;
+	}
 	return (
 		<div>
 			<p>{data?.uuid}</p>
@@ -31,6 +39,7 @@ export const ShowForecastGroup = () => {
 				<p>{span.pricePerDay}</p>
 			</div>)}
 			<hr/>
+			<EntryEditor forecastGroupUuid={data?.uuid} />
 		</div>
 	);
 };
