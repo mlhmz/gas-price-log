@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router";
 import { useMutateForecastGroup } from "@/hooks/use-mutate-forecast-group";
 
-export const ForecastGroupEditor = () => {
+export const ForecastGroupForm = () => {
 	const navigate = useNavigate();
 	const { register, handleSubmit } = useForm({
 		resolver: zodResolver(forecastGroupMutateSchema),

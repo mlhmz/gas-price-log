@@ -1,4 +1,4 @@
-import { EntryEditor } from "@/components/EntryEditor";
+import { EntryForm } from "@/components/EntryForm";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
 import { useParams } from "react-router";
 
@@ -38,7 +38,7 @@ export const ShowForecastGroup = () => {
 				<p>{span.pricePerDay}</p>
 			</div>)}
 			<hr/>
-			<EntryEditor forecastGroupUuid={data?.uuid} />
+			<EntryForm forecastGroupUuid={data?.uuid} />
 		</div>
 	);
 };

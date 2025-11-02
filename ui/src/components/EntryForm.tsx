@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
-export const EntryEditor = ({
+export const EntryForm = ({
 	forecastGroupUuid,
 }: {
 	forecastGroupUuid?: string;

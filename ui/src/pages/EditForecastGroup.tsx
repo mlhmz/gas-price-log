@@ -1,9 +1,9 @@
-import { ForecastGroupEditor } from "@/components/ForecastGroupEditor";
+import { ForecastGroupForm } from "@/components/ForecastGroupForm";
 
 export const EditForecastGroup = () => {
 	return (
 		<div className="container">
-			<ForecastGroupEditor />
+			<ForecastGroupForm />
 		</div>
 	);
 };
