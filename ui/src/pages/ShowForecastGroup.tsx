@@ -1,7 +1,6 @@
 import { EntryEditor } from "@/components/EntryEditor";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
-import { isServerError } from "@/types/Common";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 export const ShowForecastGroup = () => {
 	const { uuid } = useParams();
