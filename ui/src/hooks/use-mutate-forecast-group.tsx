@@ -1,6 +1,8 @@
-import type {
-	ForecastGroupMutation,
-	ForecastGroupQuery,
+import { isServerError } from "@/types/Common";
+import {
+	forecastGroupQuerySchema,
+	type ForecastGroupMutation,
+	type ForecastGroupQuery,
 } from "@/types/ForecastGroup";
 import { useMutation } from "@tanstack/react-query";
 import type { Dispatch } from "react";
@@ -15,10 +17,15 @@ const postForecastGroup = async (
 			"Content-Type": "application/json",
 		},
 	});
-	if (!response.ok) {
-		console.log(response);
+	const json = await response.json();
+	const parseResult = forecastGroupQuerySchema.safeParse(json);
+	if (parseResult.success) {
+		return parseResult.data;
 	}
-	return response.json();
+	if (isServerError(json)) {
+		throw new Error(json.message);
+	}
+	throw parseResult.error;
 };
 
 export const useMutateForecastGroup = ({

@@ -20,7 +20,7 @@ export type EntryQuery = z.infer<typeof entryQuerySchema>
 
 export const entryMutationSchema = z.object({
 	value: z.number(),
-	date: z.string(),
+	date: z.iso.date(),
 	forecastGroup: forecastReferenceSchema
 })
 

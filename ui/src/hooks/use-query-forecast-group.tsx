@@ -18,7 +18,6 @@ const getForecastGroup = async (
 	const json = await response.json();
 	const parseResult = forecastGroupQuerySchema.safeParse(json);
 	if (parseResult.success) {
-		console.log(parseResult);
 		return parseResult.data;
 	}
 	if (isServerError(json)) {
