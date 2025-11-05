@@ -12,6 +12,7 @@ export const SpansTable = ({ spans }: { spans: Array<SpanQuery> }) => {
 						<TableHead>Difference (KWh)</TableHead>
                         <TableHead>Gas per Day (KWh)</TableHead>
                         <TableHead>Price of Span</TableHead>
+						<TableHead>Price per Month on Span Basis</TableHead>
                         <TableHead>Price per Day</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -24,6 +25,7 @@ export const SpansTable = ({ spans }: { spans: Array<SpanQuery> }) => {
 							<TableCell id="difference">{span.difference}</TableCell>
 							<TableCell id="gasPerDay">{span.gasPerDay}</TableCell>
 							<TableCell id="priceOfSpan">{span.priceOfSpan}</TableCell>
+							<TableCell id="pricePerMonthOnSpanBasis">{span.pricePerMonthOnSpanBasis}</TableCell>
 							<TableCell id="pricePerDay">{span.pricePerDay}</TableCell>
 						</TableRow>
 					))}
