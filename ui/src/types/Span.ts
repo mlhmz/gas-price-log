@@ -23,8 +23,3 @@ export const spanQuerySchema = z.object({
 })
 
 export type SpanQuery = z.infer<typeof spanQuerySchema>;
-
-export type SpanYAxis = {
-	fieldName: string,
-	displayName: string
-};

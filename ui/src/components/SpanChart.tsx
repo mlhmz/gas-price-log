@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { SpanQuery, SpanYAxis } from "@/types/Span";
+import type { SpanQuery } from "@/types/Span";
 import { useState } from "react";
 import {
 	CartesianGrid,
@@ -9,6 +9,11 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+
+type SpanYAxis = {
+	fieldName: string,
+	displayName: string
+};
 
 const fields: Array<SpanYAxis> = [
 	{
