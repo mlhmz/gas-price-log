@@ -1,9 +1,5 @@
 import z from "zod";
 
-export interface Span {
-	uuid?: string;
-}
-
 const forecastReferenceQuerySchema = z.object({
 	uuid: z.uuid()
 })
@@ -12,7 +8,7 @@ const entryReferenceQuerySchema = z.object({
 	uuid: z.uuid()
 })
 
-export const spanSchema = z.object({
+export const spanQuerySchema = z.object({
 	uuid: z.uuid(),
 	fromEntry: entryReferenceQuerySchema,
 	toEntry: entryReferenceQuerySchema,
@@ -25,3 +21,4 @@ export const spanSchema = z.object({
 	forecastGroup: forecastReferenceQuerySchema
 })
 
+export type SpanQuery = z.infer<typeof spanQuerySchema>;

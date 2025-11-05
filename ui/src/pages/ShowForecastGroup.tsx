@@ -1,5 +1,6 @@
 import { EntriesTable } from "@/components/EntriesTable";
 import { EntryForm } from "@/components/EntryForm";
+import { SpansTable } from "@/components/SpansTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
@@ -25,6 +26,7 @@ export const ShowForecastGroup = () => {
 				<TabsList defaultValue="group">
 					<TabsTrigger value="group">Group</TabsTrigger>
 					<TabsTrigger value="entries">Entries</TabsTrigger>
+					<TabsTrigger value="spans">Spans</TabsTrigger>
 				</TabsList>
 				<TabsContent value="group" className="w-[98vw] md:w-[70vw]">
 					<Card>
@@ -42,6 +44,13 @@ export const ShowForecastGroup = () => {
 						<CardContent className="flex flex-col flex-wrap items-center">
 							<EntriesTable entries={data?.entries ?? []} />
 							<EntryForm forecastGroupUuid={data?.uuid} />
+						</CardContent>
+					</Card>
+				</TabsContent>
+				<TabsContent value="spans" className="w-[98vw] md:w-[70vw]">
+					<Card>
+						<CardContent className="flex flex-col flex-wrap items-center">
+							<SpansTable spans={data?.spans ?? []} />
 						</CardContent>
 					</Card>
 				</TabsContent>

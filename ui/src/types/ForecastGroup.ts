@@ -1,6 +1,6 @@
 import z from "zod";
 import { entryQuerySchema } from "./Entry";
-import { spanSchema as spanQuerySchema } from "./Span";
+import { spanQuerySchema } from "./Span";
 
 export const forecastGroupMutateSchema = z.object({
 	groupName: z.string(),
@@ -15,12 +15,8 @@ export const forecastGroupQuerySchema = z.object({
 	groupName: z.string(),
 	gasPricePerKwh: z.number(),
 	kwhFactorPerQubicmeter: z.number(),
-	entries: z.array(
-		entryQuerySchema
-	),
-	spans: z.array(
-		spanQuerySchema,
-	),
+	entries: z.array(entryQuerySchema),
+	spans: z.array(spanQuerySchema),
 });
 
 export type ForecastGroupQuery = z.infer<typeof forecastGroupQuerySchema>;
