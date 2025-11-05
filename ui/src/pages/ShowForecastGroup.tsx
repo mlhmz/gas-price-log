@@ -1,7 +1,8 @@
 import { EntriesTable } from "@/components/EntriesTable";
 import { EntryForm } from "@/components/EntryForm";
+import { SpanChart } from "@/components/SpanChart";
 import { SpansTable } from "@/components/SpansTable";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
 import { useParams } from "react-router";
@@ -22,8 +23,8 @@ export const ShowForecastGroup = () => {
 	}
 	return (
 		<div className="flex flex-col items-center my-5">
-			<Tabs>
-				<TabsList defaultValue="group">
+			<Tabs defaultValue="group">
+				<TabsList>
 					<TabsTrigger value="group">Overview</TabsTrigger>
 					<TabsTrigger value="entries">Entries</TabsTrigger>
 					<TabsTrigger value="spans">Spans</TabsTrigger>
@@ -33,9 +34,14 @@ export const ShowForecastGroup = () => {
 						<CardContent className="flex flex-col items-center">
 							<h1 className="text-xl text-center">{data?.groupName}</h1>
 							<div className="flex gap-5">
-								<p className="text-gray-400 text-xs">Gas Price per KWh: {data?.gasPricePerKwh}</p>
-								<p className="text-gray-400 text-xs">Factor per m³: {data?.kwhFactorPerQubicmeter}</p>
+								<p className="text-gray-400 text-xs">
+									Gas Price per KWh: {data?.gasPricePerKwh}
+								</p>
+								<p className="text-gray-400 text-xs">
+									Factor per m³: {data?.kwhFactorPerQubicmeter}
+								</p>
 							</div>
+							{data?.spans && <SpanChart spans={data?.spans} />}
 						</CardContent>
 					</Card>
 				</TabsContent>
