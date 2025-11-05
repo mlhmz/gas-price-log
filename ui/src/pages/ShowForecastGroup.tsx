@@ -24,7 +24,7 @@ export const ShowForecastGroup = () => {
 		<div className="flex flex-col items-center my-5">
 			<Tabs>
 				<TabsList defaultValue="group">
-					<TabsTrigger value="group">Group</TabsTrigger>
+					<TabsTrigger value="group">Overview</TabsTrigger>
 					<TabsTrigger value="entries">Entries</TabsTrigger>
 					<TabsTrigger value="spans">Spans</TabsTrigger>
 				</TabsList>

@@ -7,6 +7,8 @@ export const SpansTable = ({ spans }: { spans: Array<SpanQuery> }) => {
 				<TableHeader>
 					<TableRow>
 						<TableHead>Days</TableHead>
+                        <TableHead>From</TableHead>
+                        <TableHead>To</TableHead>
 						<TableHead>Difference (KWh)</TableHead>
                         <TableHead>Gas per Day (KWh)</TableHead>
                         <TableHead>Price of Span</TableHead>
@@ -17,6 +19,8 @@ export const SpansTable = ({ spans }: { spans: Array<SpanQuery> }) => {
 					{spans.map((span) => (
 						<TableRow key={span.uuid}>
 							<TableCell id="days">{span.days}</TableCell>
+							<TableCell id="from">{span.fromEntry.date}</TableCell>
+							<TableCell id="to">{span.toEntry.date}</TableCell>
 							<TableCell id="difference">{span.difference}</TableCell>
 							<TableCell id="gasPerDay">{span.gasPerDay}</TableCell>
 							<TableCell id="priceOfSpan">{span.priceOfSpan}</TableCell>

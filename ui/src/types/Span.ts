@@ -5,7 +5,8 @@ const forecastReferenceQuerySchema = z.object({
 })
 
 const entryReferenceQuerySchema = z.object({
-	uuid: z.uuid()
+	uuid: z.uuid(),
+	date: z.iso.date()
 })
 
 export const spanQuerySchema = z.object({
