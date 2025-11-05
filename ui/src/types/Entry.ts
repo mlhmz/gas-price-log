@@ -1,9 +1,5 @@
 import z from "zod";
 
-export interface Entry {
-	uuid?: string;
-}
-
 const forecastReferenceSchema = z.object({
 	uuid: z.uuid()
 });

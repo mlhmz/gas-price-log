@@ -11,6 +11,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutateEntry } from "@/hooks/use-mutate-entry";
+import { formatISO } from "date-fns";
 
 export const EntryForm = ({
 	forecastGroupUuid,
@@ -39,9 +40,9 @@ export const EntryForm = ({
 		if (!date) {
 			return "";
 		}
-		console.log(date.toISOString());
-		const isoString = date.toISOString();
-		return isoString.substring(0, 10);
+		return formatISO(date, {
+			representation: "date"
+		});
 	};
 
 	const onSubmit = (data: EntryMutation) =>

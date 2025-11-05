@@ -1,12 +1,7 @@
+import { EntriesTable } from "@/components/EntriesTable";
 import { EntryForm } from "@/components/EntryForm";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQueryForecastGroup } from "@/hooks/use-query-forecast-group";
 import { useParams } from "react-router";
 
@@ -25,44 +20,32 @@ export const ShowForecastGroup = () => {
 		);
 	}
 	return (
-		<div>
-			<p>{data?.uuid}</p>
-			<p>{data?.groupName}</p>
-			<p>{data?.gasPricePerKwh}</p>
-			<p>{data?.kwhFactorPerQubicmeter}</p>
-			<hr />
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead>Value</TableHead>
-						<TableHead>Date</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody>
-					{data?.entries.map((entry) => (
-						<TableRow key={entry.uuid}>
-							<TableCell id="value">{entry.value}</TableCell>
-							<TableCell id="date">{entry.date}</TableCell>
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-			<EntryForm forecastGroupUuid={data?.uuid} />
-			{/*data?.spans.map((span) => (
-				<div key={span.uuid}>
-					<p>Span</p>
-					<p>UUID: {span.uuid}</p>
-					<p>From: {span.fromEntry?.uuid}</p>
-					<p>To: {span.toEntry?.uuid}</p>
-					<p>{span.days}</p>
-					<p>{span.difference}</p>
-					<p>{span.gasPerDay}</p>
-					<p>{span.priceOfSpan}</p>
-					<p>{span.pricePerMonthOnSpanBasis}</p>
-					<p>{span.pricePerDay}</p>
-				</div>
-			))*/}
-			<hr />
+		<div className="flex flex-col items-center my-5">
+			<Tabs>
+				<TabsList defaultValue="group">
+					<TabsTrigger value="group">Group</TabsTrigger>
+					<TabsTrigger value="entries">Entries</TabsTrigger>
+				</TabsList>
+				<TabsContent value="group" className="w-[98vw] md:w-[70vw]">
+					<Card>
+						<CardContent className="flex flex-col items-center">
+							<h1 className="text-xl text-center">{data?.groupName}</h1>
+							<div className="flex gap-5">
+								<p className="text-gray-400 text-xs">Gas Price per KWh: {data?.gasPricePerKwh}</p>
+								<p className="text-gray-400 text-xs">Factor per m³: {data?.kwhFactorPerQubicmeter}</p>
+							</div>
+						</CardContent>
+					</Card>
+				</TabsContent>
+				<TabsContent value="entries" className="w-[98vw] md:w-[70vw]">
+					<Card>
+						<CardContent className="flex flex-col flex-wrap items-center">
+							<EntriesTable entries={data?.entries ?? []} />
+							<EntryForm forecastGroupUuid={data?.uuid} />
+						</CardContent>
+					</Card>
+				</TabsContent>
+			</Tabs>
 		</div>
 	);
 };
