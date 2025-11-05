@@ -56,7 +56,7 @@ export const SpanChart = ({ spans }: { spans: Array<SpanQuery> }) => {
 				responsive
 				data={spans}
 			>
-				<CartesianGrid />
+				<CartesianGrid strokeDasharray="3 3" />
 				<Line
 					type="monotone"
 					name={selectedYAxis.displayName}
@@ -66,7 +66,7 @@ export const SpanChart = ({ spans }: { spans: Array<SpanQuery> }) => {
 				/>
 				<XAxis dataKey="toEntry.date" />
 				<YAxis />
-				<Tooltip />
+				<Tooltip isAnimationActive={false} />
 			</LineChart>
 		</div>
 	);
