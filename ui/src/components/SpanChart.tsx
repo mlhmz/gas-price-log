@@ -61,6 +61,8 @@ export const SpanChart = ({ spans }: { spans: Array<SpanQuery> }) => {
 					type="monotone"
 					name={selectedYAxis.displayName}
 					dataKey={selectedYAxis.fieldName}
+                    fill="#8d64f4"
+                    stroke="#8d64f4"
 				/>
 				<XAxis dataKey="toEntry.date" />
 				<YAxis />
