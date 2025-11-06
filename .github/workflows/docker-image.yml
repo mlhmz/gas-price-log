@@ -28,7 +28,7 @@ jobs:
       - run: ./mvnw package
 
       - name: Build the Docker image
-        run: docker build . --file src/main/docker/Dockerfile --tag ghcr.io/${{ github.repository }}:latest
+        run: docker build --file src/main/docker/Dockerfile.jvm --tag ghcr.io/${{ github.repository }}:latest .
 
       - name: Push the Docker image
         run: docker push ghcr.io/${{ github.repository }}:latest
