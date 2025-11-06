@@ -24,8 +24,8 @@ public class ApplicationRouter {
     );
 
     void installRoute(@Observes StartupEvent startupEvent, Router router) {
-        StaticHandler distHandler = StaticHandler.create("META-INF/dist/");
-        StaticHandler assetsHandler = StaticHandler.create("META-INF/dist/assets/");
+        StaticHandler distHandler = StaticHandler.create("META-INF/resources/");
+        StaticHandler assetsHandler = StaticHandler.create("META-INF/resources/assets/");
 
         router.route().path("/").handler(distHandler);
         router.route().path("/*").handler(rc -> {

@@ -1,6 +1,5 @@
 import {
 	isServerError,
-	serverErrorSchema
 } from "@/types/Common";
 import {
 	forecastGroupQuerySchema,
