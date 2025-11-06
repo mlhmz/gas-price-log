@@ -45,3 +45,8 @@ nb-configuration.xml
 .certs/
 
 node_modules
+
+dist/
+
+# SQLite Database
+data.db
