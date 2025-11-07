@@ -156,35 +156,31 @@
                     <nodeVersion>v25.1.0</nodeVersion>
                 </configuration>
                 <executions>
-                    <!-- Download and install Node.js and npm -->
                     <execution>
                         <id>install-node-and-npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                     </execution>
 
-                    <!-- Run npm install -->
                     <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-
-                        <!-- optional: default phase is "generate-resources" -->
                         <phase>generate-resources</phase>
-
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
 
-                    <!-- Build the frontend -->
                     <execution>
                         <id>npm-build</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <arguments>run build</arguments>
                         </configuration>
