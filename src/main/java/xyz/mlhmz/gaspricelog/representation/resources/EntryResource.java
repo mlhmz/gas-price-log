@@ -16,7 +16,6 @@ import xyz.mlhmz.gaspricelog.representation.mappers.EntryMapper;
 import xyz.mlhmz.gaspricelog.services.EntryService;
 import xyz.mlhmz.gaspricelog.services.ForecastGroupService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Path("/api/v1/entries")
@@ -51,14 +50,6 @@ public class EntryResource {
                     .entity(new ErrorDto(Response.Status.NOT_FOUND.getStatusCode(), exception.getMessage()))
                     .build();
         }
-    }
-
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() {
-        List<Entry> entries = entryService.findAll();
-        return Response.ok(entries.stream().map(entryMapper::toDto).toList()).build();
     }
 
     @GET

@@ -2,7 +2,7 @@ package xyz.mlhmz.gaspricelog.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 import xyz.mlhmz.gaspricelog.exceptions.EntriesNotFromSameForecastgroupException;
 import xyz.mlhmz.gaspricelog.exceptions.SpanNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
+@Slf4j
 public class SpanServiceImpl implements SpanService {
     public static final int MONTH_IN_DAYS = 30;
 
@@ -25,7 +26,7 @@ public class SpanServiceImpl implements SpanService {
 
     @Override
     public List<Span> calculateSpanFromEntries(List<Entry> entries) {
-            entries.sort(Comparator.comparing(Entry::getDate));
+        entries.sort(Comparator.comparing(Entry::getDate));
 
         Set<UUID> forecastGroupUuidSet = entries.stream().map(entry -> {
             ForecastGroup forecastGroup = entry.getForecastGroup();
@@ -48,6 +49,7 @@ public class SpanServiceImpl implements SpanService {
             }
             Span span = createAndCalculateSpanValues(entry, lastEntry);
             Span savedSpan = this.spanRepository.create(span);
+            log.info("Created span with the uuid '{}'.", savedSpan.getUuid());
             spanList.add(savedSpan);
             lastEntry = entry;
         }
@@ -108,11 +110,16 @@ public class SpanServiceImpl implements SpanService {
 
     @Override
     public void deleteSpan(Span span) {
+        log.info("Deleting span with the uuid '{}'", span.getUuid());
         this.spanRepository.deleteSpan(span);
     }
 
     @Override
     public void deleteSpans(List<Span> spans) {
+        log.info("Deleting spans with the uuids '{}'", spans.stream()
+                .map(Span::getUuid)
+                .map(UUID::toString)
+                .collect(Collectors.joining(", ")));
         this.spanRepository.deleteSpans(spans);
     }
 

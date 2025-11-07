@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import xyz.mlhmz.gaspricelog.exceptions.ForecastGroupNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
 import xyz.mlhmz.gaspricelog.persistence.entities.Span;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
+@Slf4j
 public class ForecastGroupServiceImpl implements ForecastGroupService {
     @Inject
     ForecastGroupRepository repository;
@@ -20,16 +22,15 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
     @Inject
     SpanService spanService;
 
-    @Inject
-    EntityManager em;
-
     @Override
     @Transactional
     public ForecastGroup create(ForecastGroup group) {
         if (group.getEntries() != null && !group.getEntries().isEmpty()) {
             recalculateForecastGroupSpans(group);
         }
-        return repository.create(group);
+        ForecastGroup forecastGroup = repository.create(group);
+        log.info("Created group with the uuid '{}'.", forecastGroup.getUuid());
+        return forecastGroup;
     }
 
     @Override
@@ -37,7 +38,9 @@ public class ForecastGroupServiceImpl implements ForecastGroupService {
         if (group.getEntries() != null && !group.getEntries().isEmpty()) {
             recalculateForecastGroupSpans(group);
         }
-        return repository.update(group);
+        ForecastGroup forecastGroup = repository.update(group);
+        log.info("Updated group with the uuid '{}'.", forecastGroup.getUuid());
+        return forecastGroup;
     }
 
     @Override

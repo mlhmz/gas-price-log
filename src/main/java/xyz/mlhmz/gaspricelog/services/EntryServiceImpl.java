@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import xyz.mlhmz.gaspricelog.exceptions.EntryNotFoundException;
 import xyz.mlhmz.gaspricelog.persistence.entities.Entry;
 import xyz.mlhmz.gaspricelog.persistence.entities.ForecastGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
+@Slf4j
 public class EntryServiceImpl implements EntryService {
     @Inject
     EntryRepository entryRepository;
@@ -27,6 +29,7 @@ public class EntryServiceImpl implements EntryService {
     @Transactional
     public Entry createEntry(Entry entry) {
         Entry savedEntry = entryRepository.createEntry(entry);
+        log.info("Created entry with the uuid '{}'", entry.getUuid());
         ForecastGroup forecastGroup = savedEntry.getForecastGroup();
         if (forecastGroup != null) {
             em.merge(forecastGroup);

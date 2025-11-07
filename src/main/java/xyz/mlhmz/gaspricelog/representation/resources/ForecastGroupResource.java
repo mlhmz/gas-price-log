@@ -35,15 +35,6 @@ public class ForecastGroupResource {
     }
 
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll() {
-        return Response.ok(
-                forecastGroupService.findAll().stream().map(mapper::toDto).toList()
-        ).build();
-    }
-
-    @GET
     @Path("/{uuid}")
     public Response getById(@PathParam("uuid") UUID uuid) {
         try {

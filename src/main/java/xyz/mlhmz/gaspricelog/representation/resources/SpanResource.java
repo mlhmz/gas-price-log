@@ -1,8 +1,9 @@
 package xyz.mlhmz.gaspricelog.representation.resources;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import xyz.mlhmz.gaspricelog.exceptions.SpanNotFoundException;
@@ -20,13 +21,6 @@ public class SpanResource {
 
     @Inject
     SpanService spanService;
-
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllSpans() {
-        return Response.ok(spanService.findAllSpans().stream().map(mapper::toDto)).build();
-    }
 
     @GET
     @Path("/{uuid}")
