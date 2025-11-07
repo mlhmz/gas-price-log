@@ -205,6 +205,7 @@
                                     <directory>${project.basedir}/ui/dist</directory>
                                     <includes>
                                         <include>**/*</include>
+                                        <filtering>false</filtering>
                                     </includes>
                                 </resource>
                             </resources>
