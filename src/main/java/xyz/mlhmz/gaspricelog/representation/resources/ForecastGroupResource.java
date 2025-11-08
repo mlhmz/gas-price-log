@@ -34,6 +34,24 @@ public class ForecastGroupResource {
                 .build();
     }
 
+    @POST
+    @Path("/{uuid}/actions/recalculate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response recalculate(@PathParam("uuid") UUID uuid) {
+        try {
+            ForecastGroup group = forecastGroupService.findByUuid(uuid);
+            forecastGroupService.recalculateForecastGroupSpans(group);
+            return Response.status(Response.Status.CREATED)
+                    .entity(mapper.toDto(group))
+                    .build();
+        } catch (ForecastGroupNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorDto(Response.Status.NOT_FOUND.getStatusCode(), e.getMessage()))
+                    .build();
+        }
+    }
+
     @GET
     @Path("/{uuid}")
     public Response getById(@PathParam("uuid") UUID uuid) {
