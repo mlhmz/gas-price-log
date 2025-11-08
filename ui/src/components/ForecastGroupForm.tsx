@@ -25,7 +25,7 @@ export const ForecastGroupForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<Card className="flex flex-col gap-2 w-1/3 mx-auto my-5">
+			<Card className="flex flex-col max-md:rounded-none max-md: border-x-0 gap-2 w-full md:w-1/3 mx-auto my-5">
 				<CardHeader>
 					<CardTitle className="text-center">
 						<h1>Create a Forecast Group</h1>
@@ -33,7 +33,7 @@ export const ForecastGroupForm = () => {
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
 					<Input placeholder="Group Name" {...register("groupName")} />
-					<div className="flex gap-2">
+					<div className="flex max-md:flex-col gap-2">
 						<Input
 							placeholder="Price per KWh"
 							{...register("gasPricePerKwh", {

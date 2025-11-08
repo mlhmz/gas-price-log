@@ -29,8 +29,8 @@ export const ShowForecastGroup = () => {
 					<TabsTrigger value="entries">Entries</TabsTrigger>
 					<TabsTrigger value="spans">Spans</TabsTrigger>
 				</TabsList>
-				<TabsContent value="group" className="w-[98vw] md:w-[70vw]">
-					<Card>
+				<TabsContent value="group" className="w-screen md:w-[70vw]">
+					<Card className="max-md:rounded-none max-md:border-x-0">
 						<CardContent className="flex flex-col items-center">
 							<h1 className="text-xl text-center">{data?.groupName}</h1>
 							<div className="flex gap-5">
@@ -45,16 +45,16 @@ export const ShowForecastGroup = () => {
 						</CardContent>
 					</Card>
 				</TabsContent>
-				<TabsContent value="entries" className="w-[98vw] md:w-[70vw]">
-					<Card>
+				<TabsContent value="entries" className="w-screen md:w-[70vw]">
+					<Card className="max-md:rounded-none max-md:border-x-0">
 						<CardContent className="flex flex-col flex-wrap items-center">
 							<EntriesTable entries={data?.entries ?? []} />
 							<EntryForm forecastGroupUuid={data?.uuid} />
 						</CardContent>
 					</Card>
 				</TabsContent>
-				<TabsContent value="spans" className="w-[98vw] md:w-[70vw]">
-					<Card>
+				<TabsContent value="spans" className="w-screen md:w-[70vw]">
+					<Card className="max-md:rounded-none max-md:border-x-0">
 						<CardContent className="flex flex-col flex-wrap items-center">
 							<SpansTable spans={data?.spans ?? []} />
 						</CardContent>

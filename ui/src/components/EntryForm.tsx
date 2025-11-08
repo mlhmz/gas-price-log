@@ -58,7 +58,7 @@ export const EntryForm = ({
 	}
 	return (
 		<form
-			className="flex gap-3 p-5 items-end"
+			className="flex flex-col md:flex-row gap-3 p-5 items-end"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<input
@@ -77,14 +77,14 @@ export const EntryForm = ({
 				/>
 				<p>{formState?.errors?.value?.message}</p>
 			</div>
-			<div className="flex flex-col gap-1">
+			<div className="flex flex-col gap-1 max-md:w-full">
 				<Label htmlFor="date">Date</Label>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button
 							variant="outline"
 							id="date"
-							className="w-48 justify-between font-normal"
+							className="w-full md:w-48 justify-between font-normal"
 						>
 							{getValues("date") ? getValues("date") : "Select date"}
 							<ChevronDownIcon />
@@ -109,7 +109,7 @@ export const EntryForm = ({
 				</Popover>
 				<p>{formState?.errors?.date?.message}</p>
 			</div>
-			<div className="py-1">
+			<div className="py-1 max-md:m-auto">
 				<Button type="submit">Submit</Button>
 			</div>
 		</form>
