@@ -29,6 +29,7 @@ COPY --from=backend-builder /app/target/quarkus-app/lib/ /deployments/lib/
 COPY --from=backend-builder /app/target/quarkus-app/*.jar /deployments/
 COPY --from=backend-builder /app/target/quarkus-app/app/ /deployments/app/
 COPY --from=backend-builder /app/target/quarkus-app/quarkus/ /deployments/quarkus/
+RUN mkdir -p /deployments/data
 
 EXPOSE 8080
 USER 185
