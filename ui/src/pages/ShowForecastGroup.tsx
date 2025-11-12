@@ -15,11 +15,15 @@ export const ShowForecastGroup = () => {
 	const { uuid } = useParams();
 	const { data, error } = useQueryForecastGroup({ uuid: uuid });
 	const queryClient = new QueryClient();
-	const { mutate } = useMutateRecalculateForecastGroup({ onSuccess: () => {
-		toast.success(`The spans of the forecast group '${uuid}' were successfully updated.`)
-		console.log("Invalidating queries", "forecastgroup", uuid)
-		queryClient.refetchQueries({ queryKey: ["forecastgroup", uuid] })
-	} })
+	const { mutate } = useMutateRecalculateForecastGroup({
+		onSuccess: () => {
+			toast.success(
+				`The spans of the forecast group '${uuid}' were successfully updated.`,
+			);
+			console.log("Invalidating queries", "forecastgroup", uuid);
+			queryClient.refetchQueries({ queryKey: ["forecastgroup", uuid] });
+		},
+	});
 
 	if (error) {
 		return (
@@ -38,7 +42,9 @@ export const ShowForecastGroup = () => {
 					<TabsTrigger value="group">Overview</TabsTrigger>
 					<TabsTrigger value="entries">Entries</TabsTrigger>
 					<TabsTrigger value="spans">Spans</TabsTrigger>
-					<Button size="sm" variant="ghost" onClick={() => mutate(uuid)}>Recalculate</Button>
+					<Button size="sm" variant="ghost" onClick={() => mutate(uuid)}>
+						Recalculate
+					</Button>
 				</TabsList>
 				<TabsContent value="group" className="w-screen md:w-[70vw]">
 					<Card className="max-md:rounded-none max-md:border-x-0">
